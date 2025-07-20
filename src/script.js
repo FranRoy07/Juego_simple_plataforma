@@ -100,6 +100,7 @@ function create(){
         score = 0;
         gameOver = false;
         initialTime = 30; // Reiniciar el temporizador
+        round = 1;        // Reiniciar la ronda
     });
 
     // Mostrar el botón cuando el juego termina
