@@ -33,6 +33,9 @@ var timerEvent;
 var initialTime = 30;
 
 
+var cursor;
+var wasd; //para usar las teclas w,a,s,d
+
 //variables para identificar la ronda de juego
 var round = 1; // Ronda inicial
 var roundText; // Texto para mostrar la ronda
@@ -139,6 +142,15 @@ function create(){
     //indica que se puede usar el teclado para el personaje, arriba, abajo, derecha, izquierda. Es de phaser.
     cursors = this.input.keyboard.createCursorKeys();
 
+    wasd = this.input.keyboard.addKeys({
+        up: Phaser.Input.Keyboard.KeyCodes.W,
+        left: Phaser.Input.Keyboard.KeyCodes.A,
+        down: Phaser.Input.Keyboard.KeyCodes.S,
+        right: Phaser.Input.Keyboard.KeyCodes.D,
+        space: Phaser.Input.Keyboard.KeyCodes.SPACE
+    });
+
+
     //agregar estrellas y que el pj las recoja
     stars = this.physics.add.group({ //en este caso es dinámico y no estático porque la idea es que las estrellas reboten
     key: 'star', //imagen
@@ -197,12 +209,12 @@ function update(){
     }
 
     //moverse a la izquierda, valor en negativo, porque arranca en 0, es como para graficar que a la izquierda del cero es negativo y a la derecha es positivo
-    if(cursors.left.isDown){
+    if(cursors.left.isDown || wasd.left.isDown){
         player.setVelocityX(-160);
         player.anims.play('left', true); //llama a la animación "left" de antes, en true para que haga la animación, sino solo apunta para la izquierda y se mueve como si flotase
     }
     //moverse a la derecha, valor en positivo
-    else if(cursors.right.isDown){
+    else if(cursors.right.isDown || wasd.right.isDown){
         player.setVelocityX(160);
         player.anims.play('right', true); //igual que en 'left'
     }
@@ -213,7 +225,8 @@ function update(){
     }
 
     //salto del personaje
-    if(cursors.up.isDown && player.body.touching.down){
+    if((cursors.up.isDown || wasd.up.isDown || wasd.space.isDown) 
+        && player.body.touching.down){
        player.setVelocityY(-330); 
 
     }
